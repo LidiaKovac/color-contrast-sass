@@ -1,0 +1,40 @@
+{
+  "name": "color-contrast-sass",
+  "version": "0.0.1",
+  "description": "library that helps manage color contrast for accessibility purposes",
+  "main": "index.scss",
+  "style": "index.scss",
+  "sass": "index.scss",
+  "files": [
+    "index.scss",
+    "mixins/",
+    "dist/",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LidiaKovac/color-constrast-mixin.git"
+  },
+  "keywords": [
+    "sass",
+    "scss",
+    "wcag",
+    "accessibility",
+    "a11y",
+    "mixins"
+  ],
+  "peerDependenciesMeta": {
+    "sass": {
+      "optional": false
+    }
+  },
+  "author": "Lidia Kovac",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/LidiaKovac/color-constrast-sass/issues"
+  },
+  "homepage": "https://github.com/LidiaKovac/color-constrast-sass#readme"
+}

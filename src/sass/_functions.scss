@@ -1,0 +1,45 @@
+@use "sass:color";
+@use "sass:map";
+@function linearize($channel) {
+  @if $channel <= 0.03928 {
+    @return calc($channel / 12.92);
+  } @else {
+    @return pow((($channel + 0.055) / 1.055), 2.4);
+  }
+}
+
+@function relative-luminance($color) {
+  //from 0-255 values of color, get a 0-1 value (normalization)
+  $rgb: (
+    "r": calc(color.channel($color, "red", rgb) / 255),
+    "g": calc(color.channel($color, "green", rgb) / 255),
+    "b": calc(color.channel($color, "blue", rgb) / 255),
+  );
+  $r: linearize(map.get($rgb, "r"));
+  $g: linearize(map.get($rgb, "g"));
+  $b: linearize(map.get($rgb, "b"));
+
+  /*
+    relative luminance is how bright the colors looks compared to b&w
+    
+    the ratios in which these are getting multiplied is a number representing 
+    how much the human eye is sensible to it. Green is the color we are the most sensible to.
+  */
+  @return (0.2126 * $r) + (0.7152 * $g) + (0.0722 * $b);
+}
+
+@function contrast-ratio($color1, $color2) {
+  //contrast is calculated based on luminance
+  $l1: relative-luminance($color1);
+  $l2: relative-luminance($color2);
+  $light: max($l1, $l2);
+  $dark: min($l1, $l2);
+  //0.05 gets added to avoid dividing by 0 on dark colors
+  @return calc(($light + 0.05) / ($dark + 0.05));
+}
+
+@function colour-difference($color1, $color2) {
+  @return contrast-ratio($color1, $color2);
+}
+
+
