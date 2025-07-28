@@ -1,11 +1,13 @@
-@use "sass:color";
+@use "sass:color" as color;
 @use "sass:map";
+@use "sass:math";
+@use "sass:string";
 
 @use "sass:meta"; //used to detect sass version
 
-@use "./helpers";
+@use "./helpers/helpers";
 
-$has-sass-color: meta.module-variables("color") != null;
+$has-sass-color: meta.function-exists("channel", $module: color);
 
 /**
  * Calculates the relative luminance of a given color.
@@ -25,27 +27,23 @@ $has-sass-color: meta.module-variables("color") != null;
 		@error "contrast-ratio: $color must be a color, got #{meta.type-of($color)}";
 	}
 
-	@if ($has-sass-color) {
-		$rgb: (
-			"r": calc(color.channel($color, "red", rgb) / 255),
-			"g": calc(color.channel($color, "green", rgb) / 255),
-			"b": calc(color.channel($color, "blue", rgb) / 255),
-		);
-		$r: helpers.linearize(map.get($rgb, "r"));
-		$g: helpers.linearize(map.get($rgb, "g"));
-		$b: helpers.linearize(map.get($rgb, "b"));
+	@if helpers.is-hsl($color) {
+		$color: helpers.hsl-to-rgb($color);
+	}
+	$rgb: (
+		"r": helpers.extract-channel($color, "red"),
+		"g": helpers.extract-channel($color, "green"),
+		"b": helpers.extract-channel($color, "blue"),
+	);
+	$r: helpers.linearize(map.get($rgb, "r"));
+	$g: helpers.linearize(map.get($rgb, "g"));
+	$b: helpers.linearize(map.get($rgb, "b"));
 
+	@if meta.type-of($r) == "number" and meta.type-of($g) == "number" and meta.type-of($b) == "number"
+	{
 		@return (0.2126 * $r) + (0.7152 * $g) + (0.0722 * $b);
 	} @else {
-		$rgb: (
-			"r": calc(#{red($color)} / 255),
-			"g": calc(#{green($color)} / 255),
-			"b": calc(#{blue($color)} / 255),
-		);
-		$r: helpers.linearize(map.get($rgb, "r"));
-		$g: helpers.linearize(map.get($rgb, "g"));
-		$b: helpers.linearize(map.get($rgb, "b"));
-
-		@return (0.2126 * $r) + (0.7152 * $g) + (0.0722 * $b);
+		// Return a calc() expression
+		@return unquote("calc(0.2126 * #{$r} + 0.7152 * #{$g} + 0.0722 * #{$b})");
 	}
 }

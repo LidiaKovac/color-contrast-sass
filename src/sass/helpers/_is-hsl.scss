@@ -1,0 +1,33 @@
+@use "sass:meta";
+@use "sass:color";
+
+
+/**
+ * Checks if a given color is in the HSL color space.
+ *
+ * Validates that the input is a color, then determines if it uses the HSL color space.
+ * Uses `color.space()` if available, otherwise falls back to checking if the hue,
+ * saturation, and lightness channels are accessible.
+ *
+ * @param {color} $color - The color to check.
+ *
+ * @returns {bool} True if the color is in HSL space, false otherwise.
+ *
+ * @throws Will throw an error if the input is not a color.
+ *
+ * @example
+ *   is-hsl(hsl(120, 100%, 50%)) => true
+ *   is-hsl(rgb(255, 0, 0)) => false
+ */
+@function is-hsl($color) {
+	@if meta.type-of($color) != "color" {
+		@error "Expected a color, got: #{$color}";
+	}
+	@if meta.function-exists("space", $module: color) {
+		$space: color.space($color);
+		@return $space == "hsl";
+	}
+
+	// Fallback (less safe in older Sass)
+	@return (hue($color) != null) and (saturation($color) != null) and (lightness($color) != null);
+}
