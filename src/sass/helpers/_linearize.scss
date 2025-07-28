@@ -1,0 +1,21 @@
+@use "sass:math";
+@use "sass:meta";
+/**
+ * Converts a gamma-corrected sRGB channel value to a linear-light value.
+ *
+ * This is a helper function for calculating relative luminance.
+ *
+ * @param {Number} $channel - The normalized sRGB channel value (between 0 and 1).
+ * @returns {Number} The linearized channel value.
+ */
+@function linearize($channel) {
+	@if meta.type-of($channel) == "number" {
+		@if $channel <= 0.03928 {
+			@return math.div($channel, 12.92);
+		} @else {
+			@return math.pow(math.div($channel + 0.055, 1.055), 2.4);
+		}
+	} @else {
+		@error "linearize: Unsupported channel value `#{$channel}`.";
+	}
+}

@@ -18,7 +18,7 @@ Brief description of changes
 - [ ] All tests pass
 - [ ] Documentation updated
 - [ ] No breaking changes (or marked as such)
-- [ ] Functions work with Sass 1.32.0+
+- [ ] Functions work with node versions 16, 18, 20 and sass version: 1.45.0, 1.50.0, latest. To do this, use `act` to run the GitHub actions locally
 
 ## Breaking Changes
 If this is a breaking change, describe what breaks and migration path:
