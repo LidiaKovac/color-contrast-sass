@@ -19,4 +19,4 @@
 - [ ] All tests pass
 - [ ] Documentation updated
 - [ ] No breaking changes (or marked as such)
-- [ ] Functions work with Sass 1.32.0+
+- [ ] Functions work with Sass 1.45.0+
