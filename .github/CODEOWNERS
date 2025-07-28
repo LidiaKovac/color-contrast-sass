@@ -1,0 +1,11 @@
+# Global owners
+* @LidiaKovac
+
+# Specific paths
+/src/ @LidiaKovac 
+/test/ @LidiaKovac
+/docs/ @LidiaKovac 
+
+# Configuration files
+package.json @LidiaKovac
+*.yml @LidiaKovac
