@@ -85,14 +85,16 @@ contrast-ratio(#000000,#ffffff);            // ❌ Bad
 ### Errors
 Where necessary add error handling: 
 ```sass
+@use "sass:meta";
+
 @function contrast-ratio($color1, $color2) {
   // Validate inputs
-  @if type-of($color1) != 'color' {
-    @error "contrast-ratio: $color1 must be a color, got #{type-of($color1)}";
+  @if meta.type-of($color1) != 'color' {
+    @error "contrast-ratio: $color1 must be a color, got #{meta.type-of($color1)}";
   }
   
-  @if type-of($color2) != 'color' {
-    @error "contrast-ratio: $color2 must be a color, got #{type-of($color2)}";
+  @if meta.type-of($color2) != 'color' {
+    @error "contrast-ratio: $color2 must be a color, got #{meta.type-of($color2)}";
   }
   
   // Function logic here

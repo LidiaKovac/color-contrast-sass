@@ -1,7 +1,7 @@
 const sass = require('sass');
 const path = require('path');
 
-const IMPORT_STRING = "@use 'src/sass/_functions.scss' as contrast"
+const IMPORT_STRING = "@use 'src/sass/lib.scss' as contrast"
 
 // Helper function to compile Sass and extract values
 function compileSassFunction(functionCall) {
