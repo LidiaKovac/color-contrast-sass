@@ -1,0 +1,30 @@
+@use "./relative-luminance" as lib;
+@use "sass:meta"; //used to detect sass version
+@use "sass:math";
+/**
+ * Calculates the contrast ratio between two colors according to WCAG guidelines.
+ *
+ * Contrast ratio is used to determine the readability of text over background colors.
+ * It ranges from 1 (no contrast) to 21 (maximum contrast).
+ *
+ * @param {Color} $color1 - The first color.
+ * @param {Color} $color2 - The second color.
+ * @returns {Number} The contrast ratio between the two colors.
+ * @throws Will throw an error if either parameter is not a valid color.
+ */
+@function contrast-ratio($color1, $color2) {
+	@if meta.type-of($color1) != "color" {
+		@error "contrast-ratio: $color1 must be a color, got #{meta.type-of($color1)}";
+	}
+
+	@if meta.type-of($color2) != "color" {
+		@error "contrast-ratio: $color2 must be a color, got #{meta.type-of($color2)}";
+	}
+	//contrast is calculated based on luminance
+	$l1: lib.relative-luminance($color1);
+	$l2: lib.relative-luminance($color2);
+	$light: max($l1, $l2);
+	$dark: min($l1, $l2);
+	//0.05 gets added to avoid dividing by 0 on dark colors
+	@return math.div(($light + 0.05), ($dark + 0.05));
+}

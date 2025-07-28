@@ -1,0 +1,97 @@
+@use "sass:meta";
+@use "sass:math";
+@use "sass:string";
+@use "sass:color" as color;
+/**
+ * Extracts a specific color channel and returns it in number format.
+ *
+ * This is a helper function for calculating relative luminance.
+ *
+ * @param {Number} $color The color to analyze
+ * @param {Number} $channel The channel - either red, green, or blue.
+ * @returns {Number} The channel value.
+ * @throws Throws an error if the color is of unsupported type: it's not a natural sass color, it's not a string and it doesn't start with 'var('
+ */
+@function extract-channel($color, $channel) {
+	@if meta.type-of($color) == "color" {
+		// Use color.channel if available
+		@if meta.function-exists("channel", $module: color) and index(("red", "green", "blue"), $channel) {
+			@return math.div(color.channel($color, $channel), 255);
+		} 
+        @if ($channel == "red") {
+			@return math.div(red($color), 255);
+		} @else if ($channel == "green") {
+			@return math.div(green($color), 255);
+		} @else if ($channel == "blue") {
+			@return math.div(blue($color), 255);
+		} @else {
+			@error "Unsupported channel #{$channel}";
+		}
+	} @else if meta.type-of($color) == "string" and str-index($color, "var(") {
+		// Return a CSS calc() string for runtime evaluation in browser
+		@return unquote("calc(#{ $color } / 255)");
+	} @else {
+		@error "extract-channel: Unsupported color type #{$color}";
+	}
+}
+
+
+/**
+ * Extracts a specified HSL channel value from a color.
+ * 
+ * Supports 'hue', 'saturation', and 'lightness' channels.
+ * Normalizes units for saturation and lightness to unitless fractions (0 to 1),
+ * and hue to degrees as a unitless number.
+ * Uses the `color.channel()` function if available, with fallbacks for older Sass versions.
+ * 
+ * @param {color} $color - The input color to extract the channel from.
+ * @param {string} $channel - The HSL channel to extract ('hue', 'saturation', or 'lightness').
+ * 
+ * @returns {number} The extracted channel value, normalized and unitless.
+ * 
+ * @throws Will throw an error if the input is not a color or if unexpected units are found.
+ * 
+ * @example
+ *   extract-hsl-channel(hsl(120, 50%, 60%), 'hue') => 120
+ *   extract-hsl-channel(hsl(120, 50%, 60%), 'saturation') => 0.5
+ */
+@function extract-hsl-channel($color, $channel) {
+	@if not meta.type-of($color) == "color" {
+		@error "extract-hsl-channel: Unsupported color type #{$color}";
+	}
+
+	@if meta.function-exists("channel", $module: color) {
+		$value: color.channel($color, $channel);
+
+		@if $channel == "saturation" or $channel == "lightness" {
+			@if math.unit($value) == "%" {
+				@return math.div($value, 100%);
+			} @else if not math.is-unitless($value) {
+				@error "Unexpected unit on #{$channel}: #{math.unit($value)}";
+			}
+			@return $value;
+		}
+
+		@if $channel == "hue" {
+			@if math.unit($value) == "deg" {
+				@return math.div($value, 1deg); // hue remains in degrees
+			} @else if not math.is-unitless($value) {
+				@error "Unexpected unit on hue: #{math.unit($value)}";
+			}
+			@return $value;
+		}
+	}
+
+	// Fallbacks for older Sass versions
+
+	@if $channel == "hue" {
+		@return math.div(hue($color), 1deg);
+	}
+	@if $channel == "saturation" {
+		@return math.div(saturation($color), 100%);
+	}
+	@if $channel == "lightness" {
+		@return math.div(lightness($color), 100%);
+	}
+
+}
