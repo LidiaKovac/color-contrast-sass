@@ -202,12 +202,10 @@ For further information, read the [CONTRIBUTING](CONTRIBUTING) file.
 
 MIT License - see [LICENSE](LICENSE) file for details.
 
-## Resources
+## Transparency & AI
 
-- [WCAG 2.1 Guidelines](https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html)
-- [WebAIM Contrast Checker](https://webaim.org/resources/contrastchecker/)
-- [Colour Contrast Analyser](https://www.tpgi.com/color-contrast-checker/)
+Some of this code was fixed by AI. I relied on AI mostly for testing and to add docs over functions, but I also used a chat bot to rubber duck problems I enounctered along the way. 
 
 ---
 
-**Made with ♿ for accessible web development**
+**Made with 💖 for accessible web development**
