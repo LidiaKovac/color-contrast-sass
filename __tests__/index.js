@@ -1,5 +1,6 @@
 const sass = require('sass');
 const path = require('path');
+const { parseColorString } = require('../script/utils');
 
 const IMPORT_STRING = "@use 'src/sass/lib.scss' as contrast"
 
@@ -24,7 +25,7 @@ function compileSassFunction(functionCall) {
 describe("Helper Functions", () => {
     describe("hsl-to-rgb", () => {
         const cases = [
-            { hsl: "hsl(330, 53%, 60%)", rgb: "rgb(207, 100, 154)" },
+            { hsl: "hsl(330, 53%, 60%)", rgb: "rgb(207, 100, 154)" }, //SASS PINK
             { hsl: "hsl(0, 100%, 50%)", rgb: "rgb(255, 0, 0)" },       // Red
             { hsl: "hsl(120, 100%, 50%)", rgb: "rgb(0, 255, 0)" },       // Green
             { hsl: "hsl(240, 100%, 50%)", rgb: "rgb(0, 0, 255)" },       // Blue
@@ -36,7 +37,8 @@ describe("Helper Functions", () => {
             test(`should return RGB close to ${rgb} for ${hsl}`, () => {
                 const [or, og, ob] = rgb.match(/\d+/g).map(Number);
                 const result = compileSassFunction(`contrast.hsl-to-rgb(${hsl})`);
-                const [r, g, b] = result.match(/\d+/g).map(Number);
+
+                const [r, g, b] = parseColorString(result)
                 // allowing for 2 points of tolerance
                 expect(Math.abs(r - or)).toBeLessThanOrEqual(2);
                 expect(Math.abs(g - og)).toBeLessThanOrEqual(2);
@@ -50,7 +52,16 @@ describe('Contrast Functions', () => {
     describe('colour-difference()', () => {
         test('should return 21 for maximum contrast (black on white)', () => {
             const result = compileSassFunction('contrast.colour-difference(#000000, #ffffff)');
-            expect(parseFloat(result)).toBeCloseTo(21, 1);
+
+            if (/^calc\(/.test(result)) {
+                // for older sass, we test by match, not by value, because old sass can only 
+                expect(result).toMatch(/pow/);
+                expect(result).toMatch(/0\.2126/);
+                expect(result).toMatch(/0\.7152/);
+                expect(result).toMatch(/0\.0722/);
+            } else {
+                expect(parseFloat(result)).toBeCloseTo(21, 1);
+            }
         });
 
         test('should return 1 for same colors', () => {
