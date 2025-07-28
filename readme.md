@@ -33,7 +33,7 @@ Alias for `contrast-ratio()` - same functionality with alternative spelling.
 
 ```scss
 $difference: contrast.colour-difference(#ff0000, #00ff00);
-// Returns: contrast ratio between red and green
+// Returns: contrast ratio between red and green 
 ```
 
 ## Practical Examples

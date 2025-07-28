@@ -1,6 +1,6 @@
 {
   "name": "color-contrast-sass",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "library that helps manage color contrast for accessibility purposes",
   "main": "index.scss",
   "style": "index.scss",
@@ -12,7 +12,15 @@
     "README.md"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "build": "sass index.scss dist/styles.css --style=expanded",
+    "format": "prettier --write src/**/*.scss index.scss"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "prettier": "^3.6.2",
+    "sass": "^1.69.0"
   },
   "repository": {
     "type": "git",

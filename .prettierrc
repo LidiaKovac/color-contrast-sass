@@ -1,0 +1,56 @@
+{
+    "printWidth": 80,
+    "useTabs": true,
+    "singleQuote": false,
+    "quoteProps": "as-needed",
+    "trailingComma": "es5",
+    "bracketSpacing": true,
+    "bracketSameLine": false,
+    "arrowParens": "avoid",
+    "endOfLine": "lf",
+    "embeddedLanguageFormatting": "auto",
+    "singleAttributePerLine": false,
+    "overrides": [
+        {
+            "files": [
+                "*.scss",
+                "*.sass"
+            ],
+            "options": {
+                "printWidth": 100,
+                "singleQuote": false,
+                "parser": "scss"
+            }
+        },
+        {
+            "files": [
+                "*.md"
+            ],
+            "options": {
+                "printWidth": 80,
+                "proseWrap": "always",
+                "tabWidth": 2
+            }
+        },
+        {
+            "files": [
+                "*.json",
+                "*.yml",
+                "*.yaml"
+            ],
+            "options": {
+                "tabWidth": 2,
+                "singleQuote": false
+            }
+        },
+        {
+            "files": [
+                "package.json"
+            ],
+            "options": {
+                "tabWidth": 2,
+                "printWidth": 100
+            }
+        }
+    ]
+}
