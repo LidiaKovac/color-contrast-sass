@@ -188,12 +188,13 @@ This library uses standard Sass functions and is compatible with:
 
 ## Contributing
 
+You are free and encouraged to contribute or open an issue. The purpose of this library is not to show off but to offer a tool. The more people contribute to making it usable, the better! 
+
 1. Fork the repository
 2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Test your changes with `npm test`
-4. Commit your changes (`git commit -m 'Add amazing feature'`)
-5. Push to the branch (`git push origin feature/amazing-feature`)
-6. Open a Pull Request
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
 ## License
 
