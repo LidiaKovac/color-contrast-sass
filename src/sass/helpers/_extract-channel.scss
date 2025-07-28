@@ -15,9 +15,10 @@
 @function extract-channel($color, $channel) {
 	@if meta.type-of($color) == "color" {
 		// Use color.channel if available
-		@if meta.function-exists("channel", $module: color) {
+		@if meta.function-exists("channel", $module: color) and index(("red", "green", "blue"), $channel) {
 			@return math.div(color.channel($color, $channel), 255);
-		} @else if ($channel == "red") {
+		} 
+        @if ($channel == "red") {
 			@return math.div(red($color), 255);
 		} @else if ($channel == "green") {
 			@return math.div(green($color), 255);
@@ -92,4 +93,5 @@
 	@if $channel == "lightness" {
 		@return math.div(lightness($color), 100%);
 	}
+
 }

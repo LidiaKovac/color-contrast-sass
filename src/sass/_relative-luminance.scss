@@ -39,11 +39,5 @@ $has-sass-color: meta.function-exists("channel", $module: color);
 	$g: helpers.linearize(map.get($rgb, "g"));
 	$b: helpers.linearize(map.get($rgb, "b"));
 
-	@if meta.type-of($r) == "number" and meta.type-of($g) == "number" and meta.type-of($b) == "number"
-	{
-		@return (0.2126 * $r) + (0.7152 * $g) + (0.0722 * $b);
-	} @else {
-		// Return a calc() expression
-		@return unquote("calc(0.2126 * #{$r} + 0.7152 * #{$g} + 0.0722 * #{$b})");
-	}
+	@return (0.2126 * $r) + (0.7152 * $g) + (0.0722 * $b);
 }

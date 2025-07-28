@@ -1,6 +1,6 @@
 @use "./relative-luminance" as lib;
 @use "sass:meta"; //used to detect sass version
-
+@use "sass:math";
 /**
  * Calculates the contrast ratio between two colors according to WCAG guidelines.
  *
@@ -26,5 +26,5 @@
 	$light: max($l1, $l2);
 	$dark: min($l1, $l2);
 	//0.05 gets added to avoid dividing by 0 on dark colors
-	@return calc(($light + 0.05) / ($dark + 0.05));
+	@return math.div(($light + 0.05), ($dark + 0.05));
 }
