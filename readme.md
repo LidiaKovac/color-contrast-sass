@@ -21,29 +21,16 @@ npm install color-contrast-sass
 ### Basic Import
 
 ```scss
-@use 'color-contrast-sass' as contrast;
+@use 'color-contrast-sass' as contrast; //remember that every project and framework will require a different import style. 
+//Most likely, you will need to go to the node_modules folder and navigate to color-constrast-sass/index.scss
 ```
 
-### Available Functions
-
-
-#### `colour-difference($color1, $color2)`
-
-Alias for `contrast-ratio()` - same functionality with alternative spelling.
-
-```scss
-$difference: contrast.colour-difference(#ff0000, #00ff00);
-// Returns: contrast ratio between red and green 
-```
 
 ## Practical Examples
 
 ### Accessibility-First Button Mixin
 
 ```scss
-@use 'color-contrast-sass' as contrast; //remember that every project and framework will require a different import style. 
-//Most likely, you will need to go to the node_modules folder and navigate to color-constrast-sass/index.scss 
-
 @mixin accessible-button($bg-color, $min-contrast: 5) {
   background-color: $bg-color;
   
