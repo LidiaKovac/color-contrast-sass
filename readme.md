@@ -41,20 +41,21 @@ $difference: contrast.colour-difference(#ff0000, #00ff00);
 ### Accessibility-First Button Mixin
 
 ```scss
-@use 'color-contrast-sass' as contrast;
+@use 'color-contrast-sass' as contrast; //remember that every project and framework will require a different import style. 
+//Most likely, you will need to go to the node_modules folder and navigate to color-constrast-sass/index.scss 
 
-@mixin accessible-button($bg-color, $min-contrast: 4.5) {
+@mixin accessible-button($bg-color, $min-contrast: 5) {
   background-color: $bg-color;
   
   // Choose text color based on contrast ratio
-  @if contrast.contrast-ratio($bg-color, #ffffff) >= $min-contrast {
+  @if contrast.colour-difference($bg-color, #ffffff) >= $min-contrast {
     color: #ffffff;
   } @else {
     color: #000000;
   }
   
   // Ensure border has sufficient contrast too
-  @if contrast.contrast-ratio($bg-color, #000000) < 3 {
+  @if contrast.colour-difference($bg-color, #000000) < 3 {
     border: 1px solid #666666;
   }
 }
@@ -68,57 +69,7 @@ $difference: contrast.colour-difference(#ff0000, #00ff00);
 }
 ```
 
-### Dynamic Theme Colors
 
-```scss
-@use 'color-contrast-sass' as contrast;
-
-$brand-color: #7b68ee;
-$background: #f8f9fa;
-
-.card {
-  background-color: $background;
-  
-  // Automatically choose heading color based on contrast
-  .card-title {
-    @if contrast.contrast-ratio($brand-color, $background) >= 4.5 {
-      color: $brand-color;
-    } @else {
-      color: darken($brand-color, 20%);
-    }
-  }
-}
-```
-
-### Accessibility Validation Helper
-
-```scss
-@use 'color-contrast-sass' as contrast;
-
-@function meets-wcag-aa($foreground, $background, $large-text: false) {
-  $required-ratio: if($large-text, 3, 4.5);
-  $actual-ratio: contrast.contrast-ratio($foreground, $background);
-  
-  @return $actual-ratio >= $required-ratio;
-}
-
-@function meets-wcag-aaa($foreground, $background, $large-text: false) {
-  $required-ratio: if($large-text, 4.5, 7);
-  $actual-ratio: contrast.contrast-ratio($foreground, $background);
-  
-  @return $actual-ratio >= $required-ratio;
-}
-
-// Usage
-.text-normal {
-  color: #333333;
-  background: #ffffff;
-  
-  @if not meets-wcag-aa(#333333, #ffffff) {
-    @warn "Text color does not meet WCAG AA standards!";
-  }
-}
-```
 
 ## WCAG Contrast Standards
 
@@ -135,50 +86,6 @@ $background: #f8f9fa;
 - **3:1** - WCAG AA standard for large text
 - **1:1** - No contrast (same color)
 
-## Advanced Usage
-
-### Color Palette Generator
-
-```scss
-@use 'color-contrast-sass' as contrast;
-
-@function generate-accessible-palette($base-color, $background: #ffffff) {
-  $palette: ();
-  
-  // Generate shades until we find accessible ones
-  @for $i from 1 through 9 {
-    $shade: mix(#000000, $base-color, $i * 10%);
-    @if contrast.contrast-ratio($shade, $background) >= 4.5 {
-      $palette: map-merge($palette, (
-        "shade-#{$i}": $shade
-      ));
-    }
-  }
-  
-  @return $palette;
-}
-```
-
-### Debugging Contrast Issues
-
-```scss
-@use 'color-contrast-sass' as contrast;
-
-@mixin debug-contrast($foreground, $background) {
-  $ratio: contrast.contrast-ratio($foreground, $background);
-  
-  @debug "Contrast ratio: #{$ratio}";
-  @debug "WCAG AA compliant: #{$ratio >= 4.5}";
-  @debug "WCAG AAA compliant: #{$ratio >= 7}";
-}
-
-.my-component {
-  color: #666666;
-  background: #f0f0f0;
-  
-  @include debug-contrast(#666666, #f0f0f0);
-}
-```
 
 ## Browser Support
 
